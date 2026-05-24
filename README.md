@@ -78,8 +78,8 @@ This allows:
 
 ### Mobile View 📱
 
-<img width="700" height="1500" alt="image" src="https://github.com/user-attachments/assets/85194ea0-4c3a-402f-ad9f-fd099ee784ce" />
-<img width="700" height="1500" alt="image" src="https://github.com/user-attachments/assets/65716232-bb4e-4e99-945d-16add6677ea1" />
+<img width="700" height="1000" alt="image" src="https://github.com/user-attachments/assets/85194ea0-4c3a-402f-ad9f-fd099ee784ce" />
+<img width="700" height="1000" alt="image" src="https://github.com/user-attachments/assets/65716232-bb4e-4e99-945d-16add6677ea1" />
 
 
 
