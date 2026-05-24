@@ -68,15 +68,20 @@ This allows:
 
 ### Landing Page 💻
 
-*Add screenshot here*
+<img width="1763" height="1228" alt="image" src="https://github.com/user-attachments/assets/5bbbdef5-b038-41a2-882a-7d001a75aa18" />
+
 
 ### Analysis Dashboard 📊
 
-*Add screenshot here*
+<img width="1763" height="1354" alt="Screenshot_24-5-2026_171538_resume-ai-lab vercel app" src="https://github.com/user-attachments/assets/1e2dc8a3-f201-4749-bd2e-ac2e66c9a3c7" />
+
 
 ### Mobile View 📱
 
-*Add screenshot here*
+<img width="780" height="1600" alt="image" src="https://github.com/user-attachments/assets/85194ea0-4c3a-402f-ad9f-fd099ee784ce" />
+<img width="778" height="1600" alt="image" src="https://github.com/user-attachments/assets/65716232-bb4e-4e99-945d-16add6677ea1" />
+
+
 
 ---
 
