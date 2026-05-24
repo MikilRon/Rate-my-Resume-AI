@@ -80,7 +80,7 @@ This allows:
 ### Mobile View 📱
 
 <<img src="https://github.com/user-attachments/assets/85194ea0-4c3a-402f-ad9f-fd099ee784ce" width="300" />
-<img width="780" height="1600" alt="image" src="https://github.com/user-attachments/assets/65716232-bb4e-4e99-945d-16add6677ea1" />
+<<img src="https://github.com/user-attachments/assets/65716232-bb4e-4e99-945d-16add6677ea1" width="300" />
 
 
 
