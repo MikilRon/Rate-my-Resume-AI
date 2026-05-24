@@ -7,7 +7,7 @@
 ![React](https://img.shields.io/badge/React-18-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-## Overview
+## Overview 📖
 
 RatemyresumeAI is a modern resume analysis web application designed to simulate professional ATS (Applicant Tracking System) feedback in a clean, startup-style interface.
 
@@ -23,7 +23,7 @@ Built as a portfolio project focused on frontend engineering, UI/UX, and AI-insp
 
 ---
 
-## Features
+## Features ✨
 
 * Modern SaaS-inspired interface
 * Dark mode + glassmorphism design
@@ -39,7 +39,7 @@ Built as a portfolio project focused on frontend engineering, UI/UX, and AI-insp
 
 ---
 
-## Tech Stack
+## Tech Stack ⚡
 
 * React 18
 * Vite
@@ -49,7 +49,7 @@ Built as a portfolio project focused on frontend engineering, UI/UX, and AI-insp
 
 ---
 
-## Demo Mode
+## Demo Mode 🧪
 
 RatemyresumeAI currently includes a professional demo analysis fallback system.
 
@@ -64,23 +64,23 @@ This allows:
 
 ---
 
-## Screenshots
+## Screenshots 📸
 
-### Landing Page
-
-*Add screenshot here*
-
-### Analysis Dashboard
+### Landing Page 💻
 
 *Add screenshot here*
 
-### Mobile View
+### Analysis Dashboard 📊
+
+*Add screenshot here*
+
+### Mobile View 📱
 
 *Add screenshot here*
 
 ---
 
-## Installation
+## Installation 🖥️
 
 Clone the repository:
 
@@ -108,14 +108,14 @@ npm run dev
 
 ---
 
-## Deployment
+## Deployment 🚀
 
 This project is optimized for deployment on:
 
 * Vercel
 * Netlify
 
-### Vercel Deployment
+### Vercel Deployment ▲
 
 1. Import GitHub repository into Vercel
 2. Select the Vite preset
@@ -123,7 +123,7 @@ This project is optimized for deployment on:
 
 ---
 
-## Future Improvements
+## Future Improvements 🔮
 
 * Real AI integration using api key
 * PDF resume upload
@@ -137,7 +137,7 @@ This project is optimized for deployment on:
 
 ---
 
-## Project Goals
+## Project Goals 🎯
 
 This project was built to explore:
 
@@ -149,7 +149,7 @@ This project was built to explore:
 
 ---
 
-## License
+## License 🪪
 
 MIT License
 
