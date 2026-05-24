@@ -68,7 +68,8 @@ This allows:
 
 ### Landing Page 💻
 
-<<img src="https://github.com/user-attachments/assets/5bbbdef5-b038-41a2-882a-7d001a75aa18" width="300"/>
+<img width="1763" height="1228" alt="image" src="https://github.com/user-attachments/assets/0451b6e6-c49a-435d-a7b1-310c90c3ba2f" />
+
 
 
 ### Analysis Dashboard 📊
@@ -78,7 +79,7 @@ This allows:
 
 ### Mobile View 📱
 
-<img width="780" height="1600" alt="image" src="https://github.com/user-attachments/assets/85194ea0-4c3a-402f-ad9f-fd099ee784ce" />
+<<img src="https://github.com/user-attachments/assets/85194ea0-4c3a-402f-ad9f-fd099ee784ce" width="300" />
 <img width="780" height="1600" alt="image" src="https://github.com/user-attachments/assets/65716232-bb4e-4e99-945d-16add6677ea1" />
 
 
