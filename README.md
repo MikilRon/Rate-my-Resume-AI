@@ -68,7 +68,7 @@ This allows:
 
 ### Landing Page 💻
 
-<img width="1763" height="1228" alt="image" src="https://github.com/user-attachments/assets/5bbbdef5-b038-41a2-882a-7d001a75aa18" />
+<<img src="https://github.com/user-attachments/assets/5bbbdef5-b038-41a2-882a-7d001a75aa18" width="300"/>
 
 
 ### Analysis Dashboard 📊
