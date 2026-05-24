@@ -53,7 +53,7 @@ Built as a portfolio project focused on frontend engineering, UI/UX, and AI-insp
 
 RatemyresumeAI currently includes a professional demo analysis fallback system.
 
-If live AI analysis is unavailable, the application automatically generates realistic sample resume feedback to maintain a smooth user experience. (currently beta version only supports demo analysis)
+If live AI analysis is unavailable, the application automatically generates realistic sample resume feedback to maintain a smooth user experience. (Current beta version currently uses a demo analysis system while live AI integration is in development.)
 
 This allows:
 
@@ -91,7 +91,7 @@ This allows:
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/ratemyresumeai.git
+git clone https://github.com/MikilRon/ratemyresumeai.git
 ```
 
 Navigate into the project:
@@ -131,7 +131,7 @@ This project is optimized for deployment on:
 
 ## Future Improvements 🔮
 
-* Real AI integration using api key
+* Real AI integration using live AI APIs
 * PDF resume upload
 * Resume history
 * Authentication system
