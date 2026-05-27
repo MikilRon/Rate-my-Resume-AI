@@ -144,7 +144,7 @@ export default function App() {
                   Ratemyresume<span className="text-gradient">AI</span>
                 </span>
                 <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-border bg-white/5 text-muted-foreground">
-                  Beta
+                  Beta v0.1
                 </span>
               </div>
             </div>
@@ -241,7 +241,7 @@ export default function App() {
 
       <footer className="border-t border-border/60 mt-10">
         <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted-foreground flex flex-col sm:flex-row gap-2 justify-between">
-          <span>© {new Date().getFullYear()} RatemyresumeAI — University portfolio project.</span>
+          <span>© {new Date().getFullYear()} RatemyresumeAI</span>
           <span>Built with React + Vite.</span>
         </div>
       </footer>
