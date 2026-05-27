@@ -1,4 +1,4 @@
-# RatemyresumeAI
+# RatemyresumeAI Beta v0.1
 
 > Premium AI-style resume analyzer with ATS scoring, skill matching, and modern SaaS-inspired UI.
 
