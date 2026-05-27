@@ -91,13 +91,13 @@ This allows:
 Clone the repository:
 
 ```bash
-git clone https://github.com/MikilRon/ratemyresumeai.git
+git clone https://github.com/MikilRon/Rate-my-Resume-AI.git
 ```
 
 Navigate into the project:
 
 ```bash
-cd ratemyresumeai
+cd Rate-my-Resume-AI
 ```
 
 Install dependencies:
