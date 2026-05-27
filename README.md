@@ -9,7 +9,7 @@
 
 ## Overview 📖
 
-RatemyresumeAI is a modern resume analysis web application designed to simulate professional ATS (Applicant Tracking System) feedback in a clean, startup-style interface.
+RateMyResumeAI is a modern resume analysis web application designed to simulate professional ATS (Applicant Tracking System) feedback in a clean, startup-style interface.
 
 Users can paste their resume and a job description to receive:
 
@@ -152,6 +152,10 @@ This project was built to explore:
 * SaaS product design
 * deployment workflows
 * portfolio-quality application architecture
+
+## Why I Built This 💡
+
+I built RatemyResumeAI to explore AI-inspired user experiences and modern frontend engineering while learning how ATS systems analyze resumes.
 
 ---
 
