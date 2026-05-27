@@ -119,7 +119,6 @@ npm run dev
 This project is optimized for deployment on:
 
 * Vercel
-* Netlify
 
 ### Vercel Deployment ▲
 
