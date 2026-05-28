@@ -1,7 +1,9 @@
 import type { Analysis } from "../types";
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const DEFAULT_MODEL = "google/gemini-3-flash-preview";
+const LOVABLE_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
+const LOVABLE_MODEL = "google/gemini-3-flash-preview";
+const OPENAI_MODEL = "gpt-4o-mini";
 
 const SYSTEM_PROMPT = `You are an elite technical recruiter and ATS (Applicant Tracking System) expert.
 You critique resumes against job descriptions with the rigor of a hiring manager at a top tech company.
@@ -85,32 +87,47 @@ export async function analyzeWithAI(
   resume: string,
   jd: string,
   apiKey: string,
-  model: string = DEFAULT_MODEL,
+  model?: string,
 ): Promise<Analysis> {
-  const res = await fetch(GATEWAY_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Lovable-API-Key": apiKey,
-      "X-Lovable-AIG-SDK": "ratemyresumeai-web",
-    },
-    body: JSON.stringify({
-      model,
+  const isOpenAI = /^sk-/.test(apiKey) && !/^sk-lov/i.test(apiKey);
+  const url = isOpenAI ? OPENAI_URL : LOVABLE_URL;
+  const chosenModel = model ?? (isOpenAI ? OPENAI_MODEL : LOVABLE_MODEL);
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (isOpenAI) {
+    headers["Authorization"] = `Bearer ${apiKey}`;
+  } else {
+    headers["Lovable-API-Key"] = apiKey;
+    headers["X-Lovable-AIG-SDK"] = "ratemyresumeai-web";
+  }
+
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+      model: chosenModel,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: buildUserPrompt(resume, jd) },
       ],
       response_format: { type: "json_object" },
       temperature: 0.3,
-    }),
-  });
+      }),
+    });
+  } catch (e: any) {
+    throw new Error(
+      `Network error reaching ${isOpenAI ? "OpenAI" : "Lovable AI"}. ` +
+      `Check the key type, network, or browser extensions blocking the request.`,
+    );
+  }
 
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     if (res.status === 401) throw new Error("Invalid API key.");
     if (res.status === 402) throw new Error("AI credits exhausted on this key.");
     if (res.status === 429) throw new Error("Rate limited — try again in a moment.");
-    throw new Error(`AI request failed (${res.status}): ${body.slice(0, 200)}`);
+    throw new Error(`AI request failed (${res.status}): ${body.slice(0, 160)}`);
   }
 
   const data = await res.json();
