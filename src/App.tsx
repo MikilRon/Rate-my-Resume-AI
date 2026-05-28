@@ -1,19 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import {
   Sparkles, FileText, Briefcase, Loader2, CheckCircle2, AlertTriangle,
-  Target, Zap, TrendingUp, Wand2, ShieldCheck, ArrowRight,
+  Target, Zap, TrendingUp, Wand2, ShieldCheck, ArrowRight, Key, X, Cpu,
 } from "lucide-react";
+import type { Analysis } from "./types";
+import { analyzeWithAI } from "./lib/ai";
 
-type Analysis = {
-  overall: number;
-  ats: number;
-  skillMatch: number;
-  strengths: string[];
-  weaknesses: string[];
-  missingKeywords: string[];
-  improvedBullets: { before: string; after: string }[];
-};
+const KEY_STORAGE = "rmr_ai_key";
+const ENV_KEY = (import.meta as any).env?.VITE_LOVABLE_API_KEY as
+  | string
+  | undefined;
 
 const TOKEN_RE = /[a-zA-Z][a-zA-Z+#.\-]{2,}/g;
 const STOP = new Set([
@@ -106,6 +103,22 @@ export default function App() {
   const [jd, setJd] = useState("");
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [apiKey, setApiKey] = useState<string>("");
+  const [keyOpen, setKeyOpen] = useState(false);
+  const [usedFallback, setUsedFallback] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(KEY_STORAGE) || "";
+    setApiKey(stored || ENV_KEY || "");
+  }, []);
+
+  const saveKey = (k: string) => {
+    setApiKey(k);
+    if (k) localStorage.setItem(KEY_STORAGE, k);
+    else localStorage.removeItem(KEY_STORAGE);
+  };
+
+  const aiActive = Boolean(apiKey);
 
   const analyze = async () => {
     if (resume.trim().length < 40) {
@@ -118,8 +131,26 @@ export default function App() {
     }
     setLoading(true);
     setAnalysis(null);
-    await new Promise((r) => setTimeout(r, 1600));
-    setAnalysis(demoAnalyze(resume, jd));
+    setUsedFallback(false);
+
+    if (aiActive) {
+      try {
+        const result = await analyzeWithAI(resume, jd, apiKey);
+        setAnalysis(result);
+      } catch (err: any) {
+        console.error(err);
+        toast.error(
+          `${err?.message || "AI request failed"} — showing demo analysis instead.`,
+        );
+        setUsedFallback(true);
+        await new Promise((r) => setTimeout(r, 400));
+        setAnalysis(demoAnalyze(resume, jd));
+      }
+    } else {
+      await new Promise((r) => setTimeout(r, 1400));
+      setAnalysis(demoAnalyze(resume, jd));
+    }
+
     setLoading(false);
     setTimeout(
       () => document.getElementById("results")?.scrollIntoView({ behavior: "smooth" }),
@@ -148,12 +179,22 @@ export default function App() {
                 </span>
               </div>
             </div>
-            <a
-              href="#analyzer"
-              className="hidden sm:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition"
-            >
-              Try the demo <ArrowRight className="w-4 h-4" />
-            </a>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setKeyOpen(true)}
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full glass hover:bg-white/10 transition"
+                title="Configure AI API key"
+              >
+                <Key className="w-3.5 h-3.5" />
+                {aiActive ? "AI Key Set" : "Add AI Key"}
+              </button>
+              <a
+                href="#analyzer"
+                className="hidden sm:inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition"
+              >
+                Try it <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
       </header>
@@ -161,8 +202,20 @@ export default function App() {
       {/* HERO */}
       <section className="mx-auto max-w-6xl px-6 pt-12 pb-10 text-center">
         <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-xs text-muted-foreground mb-6 animate-float">
-          <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-          Demo Mode — AI analysis temporarily unavailable
+          {aiActive ? (
+            <>
+              <span className="relative flex w-2 h-2">
+                <span className="absolute inline-flex w-full h-full rounded-full bg-success opacity-60 animate-ping" />
+                <span className="relative inline-flex w-2 h-2 rounded-full bg-success" />
+              </span>
+              AI-powered analysis active
+            </>
+          ) : (
+            <>
+              <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+              Demo Mode — add an AI key to unlock real analysis
+            </>
+          )}
         </div>
         <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight leading-[1.05]">
           Land more interviews with a <br className="hidden sm:block" />
@@ -203,11 +256,13 @@ export default function App() {
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Analyzing…
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {aiActive ? "AI Analyzing…" : "Analyzing…"}
               </>
             ) : (
               <>
-                <Wand2 className="w-4 h-4" /> Analyze Resume
+                {aiActive ? <Cpu className="w-4 h-4" /> : <Wand2 className="w-4 h-4" />}
+                {aiActive ? "Run AI Analysis" : "Analyze Resume"}
               </>
             )}
           </button>
@@ -223,20 +278,10 @@ export default function App() {
         </div>
 
         {loading && (
-          <div className="mt-10 glass-strong rounded-3xl p-10 text-center">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-primary flex items-center justify-center animate-pulse">
-              <Sparkles className="w-7 h-7 text-primary-foreground" />
-            </div>
-            <p className="mt-4 text-muted-foreground">
-              Scanning for keywords, structure, ATS compatibility…
-            </p>
-            <div className="mt-5 max-w-md mx-auto h-1.5 rounded-full bg-white/5 overflow-hidden">
-              <div className="h-full w-1/2 bg-gradient-primary animate-[shimmer_1.5s_linear_infinite]" />
-            </div>
-          </div>
+          <LoadingPanel aiActive={aiActive} />
         )}
 
-        {analysis && <Results a={analysis} />}
+        {analysis && <Results a={analysis} usedFallback={usedFallback} aiActive={aiActive} />}
       </section>
 
       <footer className="border-t border-border/60 mt-10">
@@ -245,6 +290,18 @@ export default function App() {
           <span>Built with React + Vite.</span>
         </div>
       </footer>
+
+      {keyOpen && (
+        <KeyModal
+          initial={apiKey}
+          onClose={() => setKeyOpen(false)}
+          onSave={(k) => {
+            saveKey(k);
+            setKeyOpen(false);
+            toast.success(k ? "AI key saved. Real analysis enabled." : "AI key cleared.");
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -277,9 +334,122 @@ function Field({
   );
 }
 
-function Results({ a }: { a: Analysis }) {
+function LoadingPanel({ aiActive }: { aiActive: boolean }) {
+  const steps = aiActive
+    ? [
+        "Parsing resume structure…",
+        "Extracting keywords from job description…",
+        "Scoring ATS compatibility…",
+        "Drafting recruiter-grade recommendations…",
+      ]
+    : [
+        "Tokenizing resume…",
+        "Matching keywords…",
+        "Scoring compatibility…",
+        "Compiling feedback…",
+      ];
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((n) => (n + 1) % steps.length), 1100);
+    return () => clearInterval(t);
+  }, [steps.length]);
+
+  return (
+    <div className="mt-10 glass-strong rounded-3xl p-10 text-center relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent animate-scan" />
+      <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-primary flex items-center justify-center animate-pulse">
+        {aiActive ? (
+          <Cpu className="w-7 h-7 text-primary-foreground" />
+        ) : (
+          <Sparkles className="w-7 h-7 text-primary-foreground" />
+        )}
+      </div>
+      <p className="mt-4 text-sm uppercase tracking-[0.2em] text-muted-foreground">
+        {aiActive ? "AI Analyzing Resume" : "Analyzing Resume"}
+      </p>
+      <p className="mt-2 text-foreground/80 min-h-[1.5rem] transition-all">{steps[i]}</p>
+      <div className="mt-5 max-w-md mx-auto h-1.5 rounded-full bg-white/5 overflow-hidden">
+        <div className="h-full w-1/2 bg-gradient-primary animate-[shimmer_1.5s_linear_infinite]" />
+      </div>
+      <div className="mt-4 flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-dot" />
+        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-dot [animation-delay:0.2s]" />
+        <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse-dot [animation-delay:0.4s]" />
+      </div>
+    </div>
+  );
+}
+
+function KeyModal({
+  initial, onClose, onSave,
+}: { initial: string; onClose: () => void; onSave: (k: string) => void }) {
+  const [val, setVal] = useState(initial);
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="glass-strong rounded-2xl p-6 w-full max-w-md relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-muted-foreground hover:text-foreground"
+        >
+          <X className="w-4 h-4" />
+        </button>
+        <div className="flex items-center gap-2 mb-1">
+          <Key className="w-4 h-4 text-accent" />
+          <h3 className="font-medium">Connect AI Analysis</h3>
+        </div>
+        <p className="text-xs text-muted-foreground mb-4">
+          Paste a Lovable AI Gateway key to enable real, recruiter-grade resume
+          critique. Your key is stored locally in your browser only.
+        </p>
+        <input
+          type="password"
+          autoFocus
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          placeholder="sk-..."
+          className="w-full bg-white/5 border border-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-accent/60"
+        />
+        <div className="mt-4 flex items-center justify-between gap-2">
+          <button
+            onClick={() => onSave("")}
+            className="text-xs text-muted-foreground hover:text-foreground"
+          >
+            Clear key
+          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={onClose}
+              className="text-sm px-4 py-2 rounded-lg hover:bg-white/5"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => onSave(val.trim())}
+              className="text-sm px-4 py-2 rounded-lg bg-gradient-primary text-primary-foreground font-medium glow"
+            >
+              Save key
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Results({ a, usedFallback, aiActive }: { a: Analysis; usedFallback: boolean; aiActive: boolean }) {
   return (
     <div id="results" className="mt-12 space-y-6 animate-in fade-in duration-500">
+      <div className="flex justify-center">
+        <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-[11px] text-muted-foreground">
+          {usedFallback ? (
+            <><AlertTriangle className="w-3 h-3 text-warning" /> AI unavailable — showing demo analysis</>
+          ) : aiActive ? (
+            <><Cpu className="w-3 h-3 text-accent" /> Generated by AI</>
+          ) : (
+            <><ShieldCheck className="w-3 h-3 text-accent" /> Demo analysis</>
+          )}
+        </div>
+      </div>
       <div className="grid md:grid-cols-3 gap-5">
         <ScoreCard
           icon={<TrendingUp className="w-4 h-4" />}
