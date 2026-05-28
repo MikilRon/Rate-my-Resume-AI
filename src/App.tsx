@@ -398,8 +398,9 @@ function KeyModal({
           <h3 className="font-medium">Connect AI Analysis</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-4">
-          Paste a Lovable AI Gateway key to enable real, recruiter-grade resume
-          critique. Your key is stored locally in your browser only.
+          Paste an OpenAI API key (sk-…) or a Lovable AI Gateway key to enable
+          real, recruiter-grade resume critique. Your key is stored locally in
+          your browser only and sent directly to the provider.
         </p>
         <input
           type="password"
