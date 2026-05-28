@@ -144,7 +144,7 @@ export default function App() {
                   Ratemyresume<span className="text-gradient">AI</span>
                 </span>
                 <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-border bg-white/5 text-muted-foreground">
-                  Beta v0.1
+                  Beta v0.2
                 </span>
               </div>
             </div>
